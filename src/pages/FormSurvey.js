@@ -8,7 +8,7 @@ class FormSurvey extends Component{
         statussoal: 0,
         totalbobot: 0,
         nosoal: "",
-        bobot: []
+        bobot: [[]]
     }
 
     changeStatusSoal = () => {
@@ -28,29 +28,14 @@ class FormSurvey extends Component{
     }
 
     onJawab(event) {
-        // console.log(event.target.name)
         let nilai = event.target.value;
-        let soal = event.target.name;
+        let soal = Number(this.state.statussoal);
+        console.log(soal)
         let id = Number(event.target.id)-1
-        // let bobot = []
-        // this.state.bobot.push(nilai)
-        // console.log(this.state.bobot)
-        if(this.state.nosoal !== soal){
-        //     let bobot = this.state.totalbobot+Number(nilai);
-            this.setState({nosoal:soal},()=>{
-                // this.setState({bobotsementara: Number(nilai)},()=>{
-        //             console.log("!=",this.state)
-        //         // })
-            this.state.bobot.push(nilai)
-            })
-        }else{
-            this.state.bobot.splice(id,0,nilai)
-        //     this.setState({bobotsementara: Number(nilai)},()=>{
-        //         console.log("==",this.state)
-        //     })
+        this.state.bobot[soal][id] = nilai
+        console.log(this.state.bobot)
     }
-    console.log(this.state.bobot)
-    }
+
     render() {
         // console.log(this.state)
         const soaltoleransi = [
@@ -62,10 +47,10 @@ class FormSurvey extends Component{
         ]
         const soalsosek = [
             {id: 6, text: "1. Menurut anda bagaimana ketika melihat sifat teman anda yang sering memandang derajat sosial seseorang."},
-            {id: 7, text: "2. Bagaimana pendapat anda ketika melihat orang yg fanatik terhadap partai politik."},
-            {id: 8, text: "3. Bagaimana pendapat anda ketika melihat seseorang yang suka menghina pemimpin."},
-            {id: 9, text: "4. Bagaimana pendapat anda mengenai sistem pemerintahan saat ini."},
-            {id: 10, text: "5. Bagaimana pendapat anda mengenai demonstrasi yang terjadi akhir-akhir ini."},
+            {id: 2, text: "2. Bagaimana pendapat anda ketika melihat orang yg fanatik terhadap partai politik."},
+            {id: 3, text: "3. Bagaimana pendapat anda ketika melihat seseorang yang suka menghina pemimpin."},
+            {id: 4, text: "4. Bagaimana pendapat anda mengenai sistem pemerintahan saat ini."},
+            {id: 5, text: "5. Bagaimana pendapat anda mengenai demonstrasi yang terjadi akhir-akhir ini."},
         ]
         const soalagama = [
             {id: 11, text: "1. Saya yakin bahwa Al –Quran adalah kitab penyempurna dari kitab pendahulu sebagai pedoman hidup umat manusia"},
@@ -158,17 +143,17 @@ class FormSurvey extends Component{
                                                             </div>
                                                     ))
                                                 : this.state.statussoal === 1 ?
-                                                    soalsosek.map((items,index)=>(
-                                                        <div key={items.id} className="row" onChange={this.onJawab.bind(this)}>
+                                                    soalsosek.map((itemss,index)=>(
+                                                        <div key={itemss.id} className="row">
                                                             <div className="col-sm-10">
                                                                 <div className={css`margin-top:0px !important; padding-bottom: 0px !important`+" form-group"}>
-                                                                    <p className="form-control-static">{items.text}</p>
+                                                                    <p className="form-control-static">{itemss.text}</p>
                                                                 </div>
                                                             </div>
                                                             <div className={css`margin-left: 15px;`+" col-sm-10 checkbox-radios"}>
                                                                 <div className="form-check">
                                                                     <label className="form-check-label">
-                                                                        <input className="form-check-input" type="radio" name={"sosekpol"+String(items.id)} onChange={this.onJawab.bind(this)} value="0.6"/>Baik
+                                                                        <input className="form-check-input" type="radio" id={itemss.id} name={"sosekpol"+String(itemss.id)} onChange={this.onJawab.bind(this)} value="0.6"/>Baik
                                                                         <span className="circle">
                                                                             <span className="check"></span>
                                                                         </span>
@@ -178,7 +163,7 @@ class FormSurvey extends Component{
                                                             <div className={css`margin-left: 15px;`+" col-sm-10 checkbox-radios"}>
                                                                 <div className="form-check">
                                                                     <label className="form-check-label">
-                                                                        <input className="form-check-input" type="radio" name={"sosekpol"+String(items.id)} onChange={this.onJawab.bind(this)} value="0.3"/>Sedang
+                                                                        <input className="form-check-input" type="radio" id={itemss.id} name={"sosekpol"+String(itemss.id)} onChange={this.onJawab.bind(this)} value="0.3"/>Sedang
                                                                         <span className="circle">
                                                                             <span className="check"></span>
                                                                         </span>
@@ -188,7 +173,7 @@ class FormSurvey extends Component{
                                                             <div className={css`margin-left: 15px;`+" col-sm-10 checkbox-radios"}>
                                                                 <div className="form-check">
                                                                     <label className="form-check-label">
-                                                                        <input className="form-check-input" type="radio" name={"sosekpol"+String(items.id)} onChange={this.onJawab.bind(this)} value="0.1"/>Buruk
+                                                                        <input className="form-check-input" type="radio" id={itemss.id} name={"sosekpol"+String(itemss.id)} onChange={this.onJawab.bind(this)} value="0.1"/>Buruk
                                                                         <span className="circle">
                                                                             <span className="check"></span>
                                                                         </span>
@@ -198,17 +183,17 @@ class FormSurvey extends Component{
                                                         </div>
                                                 ))
                                             : this.state.statussoal === 2 ?
-                                                soalagama.map((items,index)=>(
-                                                    <div key={items.id} className="row" onChange={this.onJawab.bind(this)}>
+                                                soalagama.map((itemsss,index)=>(
+                                                    <div key={itemsss.id} className="row" >
                                                         <div className="col-sm-10">
                                                             <div className={css`margin-top:0px !important; padding-bottom: 0px !important`+" form-group"}>
-                                                                <p className="form-control-static">{items.text}</p>
+                                                                <p className="form-control-static">{itemsss.text}</p>
                                                             </div>
                                                         </div>
                                                         <div className={css`margin-left: 15px;`+" col-sm-10 checkbox-radios"}>
                                                             <div className="form-check">
                                                                 <label className="form-check-label">
-                                                                    <input className="form-check-input" type="radio" name={"soalagama"+String(items.id)} onChange={this.onJawab.bind(this)} value="0.1"/>Sangat Tidak Setuju
+                                                                    <input className="form-check-input" type="radio" id={itemsss.id} name={"soalagama"+String(itemsss.id)} onChange={this.onJawab.bind(this)} value="0.1"/>Sangat Tidak Setuju
                                                                     <span className="circle">
                                                                         <span className="check"></span>
                                                                     </span>
@@ -218,7 +203,7 @@ class FormSurvey extends Component{
                                                         <div className={css`margin-left: 15px;`+" col-sm-10 checkbox-radios"}>
                                                             <div className="form-check">
                                                                 <label className="form-check-label">
-                                                                    <input className="form-check-input" type="radio" name={"soalagama"+String(items.id)} onChange={this.onJawab.bind(this)} value="0.2"/>Tidak Setuju
+                                                                    <input className="form-check-input" type="radio" id={itemsss.id} name={"soalagama"+String(itemsss.id)} onChange={this.onJawab.bind(this)} value="0.2"/>Tidak Setuju
                                                                     <span className="circle">
                                                                         <span className="check"></span>
                                                                     </span>
@@ -228,7 +213,7 @@ class FormSurvey extends Component{
                                                         <div className={css`margin-left: 15px;`+" col-sm-10 checkbox-radios"}>
                                                             <div className="form-check">
                                                                 <label className="form-check-label">
-                                                                    <input className="form-check-input" type="radio" name={"soalagama"+String(items.id)} onChange={this.onJawab.bind(this)} value="0.3"/>Setuju
+                                                                    <input className="form-check-input" type="radio" id={itemsss.id} name={"soalagama"+String(itemsss.id)} onChange={this.onJawab.bind(this)} value="0.3"/>Setuju
                                                                     <span className="circle">
                                                                         <span className="check"></span>
                                                                     </span>
@@ -238,7 +223,7 @@ class FormSurvey extends Component{
                                                         <div className={css`margin-left: 15px;`+" col-sm-10 checkbox-radios"}>
                                                             <div className="form-check">
                                                                 <label className="form-check-label">
-                                                                    <input className="form-check-input" type="radio" name={"soalagama"+String(items.id)} onChange={this.onJawab.bind(this)} value="0.4"/>Sangat Setuju
+                                                                    <input className="form-check-input" type="radio" id={itemsss.id} name={"soalagama"+String(itemsss.id)} onChange={this.onJawab.bind(this)} value="0.4"/>Sangat Setuju
                                                                     <span className="circle">
                                                                         <span className="check"></span>
                                                                     </span>
@@ -249,7 +234,7 @@ class FormSurvey extends Component{
                                             ))
                                         : this.state.statussoal === 3 ?
                                             soalbudaya.map((items,index)=>(
-                                                <div key={items.id} className="row" onChange={this.onJawab.bind(this)}>
+                                                <div key={items.id} className="row" >
                                                     <div className="col-sm-10">
                                                         <div className={css`margin-top:0px !important; padding-bottom: 0px !important`+" form-group"}>
                                                             <p className="form-control-static">{items.text}</p>
@@ -258,7 +243,7 @@ class FormSurvey extends Component{
                                                     <div className={css`margin-left: 15px;`+" col-sm-10 checkbox-radios"}>
                                                         <div className="form-check">
                                                             <label className="form-check-label">
-                                                                <input className="form-check-input" type="radio" name={"soalbudaya"+String(items.id)} onChange={this.onJawab.bind(this)} value="0.6"/>Baik
+                                                                <input className="form-check-input" type="radio" id={items.id} name={"soalbudaya"+String(items.id)} onChange={this.onJawab.bind(this)} value="0.6"/>Baik
                                                                 <span className="circle">
                                                                     <span className="check"></span>
                                                                 </span>
@@ -268,7 +253,7 @@ class FormSurvey extends Component{
                                                     <div className={css`margin-left: 15px;`+" col-sm-10 checkbox-radios"}>
                                                         <div className="form-check">
                                                             <label className="form-check-label">
-                                                                <input className="form-check-input" type="radio" name={"soalbudaya"+String(items.id)} onChange={this.onJawab.bind(this)} value="0.3"/>Sedang
+                                                                <input className="form-check-input" type="radio" id={items.id} name={"soalbudaya"+String(items.id)} onChange={this.onJawab.bind(this)} value="0.3"/>Sedang
                                                                 <span className="circle">
                                                                     <span className="check"></span>
                                                                 </span>
@@ -278,7 +263,7 @@ class FormSurvey extends Component{
                                                     <div className={css`margin-left: 15px;`+" col-sm-10 checkbox-radios"}>
                                                         <div className="form-check">
                                                             <label className="form-check-label">
-                                                                <input className="form-check-input" type="radio" name={"soalbudaya"+String(items.id)} onChange={this.onJawab.bind(this)} value="0.1"/>Buruk
+                                                                <input className="form-check-input" type="radio" id={items.id} name={"soalbudaya"+String(items.id)} onChange={this.onJawab.bind(this)} value="0.1"/>Buruk
                                                                 <span className="circle">
                                                                     <span className="check"></span>
                                                                 </span>

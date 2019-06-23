@@ -6,6 +6,7 @@ import HighchartsReact from 'highcharts-react-official'
 import SideBar from './components/Sidebar';
 import {css} from 'emotion';
 import { Link } from 'react-router-dom'
+import Store from './pages/Store'
 
 class App extends React.Component {
   json = {
