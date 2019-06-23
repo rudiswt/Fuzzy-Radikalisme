@@ -4,8 +4,8 @@ import './App.css';
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import SideBar from './components/Sidebar';
-import * as Survey from "survey-react";
-import "survey-react/survey.css";
+import {css} from 'emotion';
+import { Link } from 'react-router-dom'
 
 class App extends React.Component {
   json = {
@@ -25,7 +25,7 @@ class App extends React.Component {
     tiponradikal:[],
     tiponagama:[],
     toleransi: 2.34,
-    sosekpol: 3.6, 
+    sosekpol: 3.6,
     radikal : 1.5,
     agama: 3,
     tmp1: [],
@@ -254,29 +254,31 @@ class App extends React.Component {
       },
       series: this.state.paramsradikal
     }
-    var surveyJSON = {"pages":[{"name":"page1","elements":[{"type":"radiogroup","name":"question1","title":"Apakah anda bosan hidup di bumi?","choices":[{"value":"item1","text":"Tidak"},{"value":"item2","text":"Biasa Ajah"},{"value":"item3","text":"Bosan"}]},{"type":"radiogroup","name":"question2","title":"Apakah anda Manusia di bumi?","choices":["item1","item2","item3"]}]}]}
+    // var surveyJSON = {"pages":[{"name":"page1","elements":[{"type":"radiogroup","name":"question1","title":"Apakah anda bosan hidup di bumi?","choices":[{"value":"item1","text":"Tidak"},{"value":"item2","text":"Biasa Ajah"},{"value":"item3","text":"Bosan"}]},{"type":"radiogroup","name":"question2","title":"Apakah anda Manusia di bumi?","choices":["item1","item2","item3"]}]}]}
     return (
-      
-          <div className="App">
+
+          <div>
             <div className="wrapper">
-              <SideBar/>
+              <SideBar active={1}/>
               <div className="main-panel">
-              <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
-                <div class="container-fluid">
-                  <div class="navbar-wrapper">
-                    <a class="navbar-brand" href="#pablo">Welcome</a>
+              <nav className="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
+                <div className="container-fluid">
+                  <div className="navbar-wrapper">
+                    <a className="navbar-brand" href="#pablo">Welcome</a>
                   </div>
-                  <div class="collapse navbar-collapse justify-content-end">
-                    <ul class="navbar-nav">
-                      <li class="nav-item dropdown">
-                        <a class="nav-link" href="#pablo" id="navbarDropdownProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          <i class="material-icons">person</i>
-                          <p class="d-lg-none d-md-block">
+                  <div className="collapse navbar-collapse justify-content-end">
+                    <ul className="navbar-nav">
+                      <li className="nav-item dropdown">
+                        <a className="nav-link" href="#pablo" id="navbarDropdownProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <i className="material-icons">person</i>
+                          <p className="d-lg-none d-md-block">
                             Account
                           </p>
                         </a>
-                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownProfile">
-                          <a class="dropdown-item" href="#">Quisioner</a>
+                        <div className="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownProfile">
+                          <Link className="dropdown-item" to="/survey">
+                            <p className={css`margin: 0px !important`}>Quisioner</p>
+                          </Link>
                         </div>
                       </li>
                     </ul>
@@ -300,56 +302,6 @@ class App extends React.Component {
                           </div>
                         </div>
                       </div>
-                    </div>
-                    <div className="col-lg-12 col-md-12">
-                      <div className="card">
-                        <div className="card-header card-header-danger">
-                          <h4 className="card-title">Tabel Interference</h4>
-                          <p className="card-category">Toleransi dan Sosekpol</p>
-                        </div>
-                        <div className="card-body table-responsive">
-                        {
-                          this.state.tmp1.length != '0'
-                            ? <table className="table table-hover">
-                            <thead>
-                                <tr>
-                                  <th>Toleransi/Sosekpol</th>
-                                  <th>Buruk</th>
-                                  <th>Sedang</th>
-                                  <th>Baik</th>
-                                  <th>Sangat Baik</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                              <tr>
-                                <td>Buruk</td>
-                                <td>Potensi ({this.state.tmp1[0][0]})</td>
-                                <td>Potensi ({this.state.tmp1[0][1]})</td>
-                                <td>Potensi ({this.state.tmp1[0][2]})</td>
-                                <td>Potensi ({this.state.tmp1[0][3]})</td>
-                              </tr>
-                              <tr>
-                                <td>Sedang</td>
-                                <td>Potensi ({this.state.tmp1[1][0]})</td>
-                                <td>Potensi ({this.state.tmp1[1][1]})</td>
-                                <td>Netral ({this.state.tmp1[1][2]})</td>
-                                <td>Netral ({this.state.tmp1[1][3]})</td>
-                              </tr>
-                              <tr>
-                                <td>Baik</td>
-                                <td>Aman ({this.state.tmp1[2][0]})</td>
-                                <td>Aman ({this.state.tmp1[2][1]})</td>
-                                <td>Aman ({this.state.tmp1[2][2]})</td>
-                                <td>Aman ({this.state.tmp1[2][3]})</td>
-                              </tr>
-                            </tbody>
-                          </table>
-                          : <div></div>
-                        }
-                        </div>
-                      </div>
-                    </div>
-                    <div className="row">
                       <div className="col-md-6">
                         <div className="card card-chart">
                           <div className="card-body">
@@ -364,11 +316,62 @@ class App extends React.Component {
                           </div>
                         </div>
                       </div>
+                    </div>
+                    <div className="col-lg-12 col-md-12">
+                      <div className="card">
+                        <div className=" card-header card-header-danger">
+                          <h4 className="card-title"><b className={css`font-weight: 500 !important`}>Tabel Interference</b></h4>
+                          <p className="card-category"><b className={css`font-weight: 500 !important`}>Toleransi dan Sosekpol</b></p>
+                        </div>
+                        <div className="card-body table-responsive">
+                        {
+                          this.state.tmp1.length != '0'
+                            ? <table className="table table-hover">
+                            <thead>
+                                <tr>
+                                  <th className="text-danger"><b className={css`font-weight: 500 !important`}>Toleransi/Sosekpol</b></th>
+                                  <th  className="text-danger"><b className={css`font-weight: 500 !important`}>Buruk</b></th>
+                                  <th className="text-danger"><b className={css`font-weight: 500 !important`}>Sedang</b></th>
+                                  <th  className="text-danger"><b className={css`font-weight: 500 !important`}>Baik</b></th>
+                                  <th  className="text-danger"><b className={css`font-weight: 500 !important`}>Sangat Baik</b></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td className="text-danger"><b className={css`font-weight: 500 !important`}>Buruk</b></td>
+                                <td>Potensi ({this.state.tmp1[0][0]})</td>
+                                <td>Potensi ({this.state.tmp1[0][1]})</td>
+                                <td>Potensi ({this.state.tmp1[0][2]})</td>
+                                <td>Potensi ({this.state.tmp1[0][3]})</td>
+                              </tr>
+                              <tr>
+                                <td className="text-danger"><b className={css`font-weight: 500 !important`}>Sedang</b></td>
+                                <td>Potensi ({this.state.tmp1[1][0]})</td>
+                                <td>Potensi ({this.state.tmp1[1][1]})</td>
+                                <td>Netral ({this.state.tmp1[1][2]})</td>
+                                <td>Netral ({this.state.tmp1[1][3]})</td>
+                              </tr>
+                              <tr>
+                                <td className="text-danger"><b className={css`font-weight: 500 !important`}>Baik</b></td>
+                                <td>Aman ({this.state.tmp1[2][0]})</td>
+                                <td>Aman ({this.state.tmp1[2][1]})</td>
+                                <td>Aman ({this.state.tmp1[2][2]})</td>
+                                <td>Aman ({this.state.tmp1[2][3]})</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                          : <div></div>
+                        }
+                        </div>
+                      </div>
+                    </div>
+                    <div className="row">
+
                       <div className="col-lg-12 col-md-12">
                       <div className="card">
                         <div className="card-header card-header-danger">
-                          <h4 className="card-title">Tabel Interference</h4>
-                          <p className="card-category">Toleransi dan Sosekpol</p>
+                          <h4 className="card-title"><b className={css`font-weight: 500 !important`}>Tabel Interference</b></h4>
+                          <p className="card-category"><b className={css`font-weight: 500 !important`}>Agama dan Budaya</b></p>
                         </div>
                         <div className="card-body table-responsive">
                         {
@@ -376,30 +379,30 @@ class App extends React.Component {
                             ? <table className="table table-hover">
                             <thead>
                                 <tr>
-                                  <th>Toleransi/Sosekpol</th>
-                                  <th>Buruk</th>
-                                  <th>Sedang</th>
-                                  <th>Baik</th>
-                                  <th>Sangat Baik</th>
+                                  <th className="text-danger"><b className={css`font-weight: 500 !important`}>Agama/Budaya</b></th>
+                                  <th className="text-danger"><b className={css`font-weight: 500 !important`}>Buruk</b></th>
+                                  <th className="text-danger"><b className={css`font-weight: 500 !important`}>Sedang</b></th>
+                                  <th className="text-danger"><b className={css`font-weight: 500 !important`}>Baik</b></th>
+                                  <th className="text-danger"><b className={css`font-weight: 500 !important`}>Sangat Baik</b></th>
                                 </tr>
                             </thead>
                             <tbody>
                               <tr>
-                                <td>Buruk</td>
+                                <td className="text-danger"><b className={css`font-weight: 500 !important`}>Buruk</b></td>
                                 <td>Potensi ({this.state.tmp2[0][0]})</td>
                                 <td>Potensi ({this.state.tmp2[0][1]})</td>
                                 <td>Potensi ({this.state.tmp2[0][2]})</td>
                                 <td>Potensi ({this.state.tmp2[0][3]})</td>
                               </tr>
                               <tr>
-                                <td>Sedang</td>
+                                <td className="text-danger"><b className={css`font-weight: 500 !important`}>Sedang</b></td>
                                 <td>Potensi ({this.state.tmp2[1][0]})</td>
                                 <td>Potensi ({this.state.tmp2[1][1]})</td>
                                 <td>Netral ({this.state.tmp2[1][2]})</td>
                                 <td>Netral ({this.state.tmp2[1][3]})</td>
                               </tr>
                               <tr>
-                                <td>Baik</td>
+                                <td className="text-danger"><b className={css`font-weight: 500 !important`}>Baik</b></td>
                                 <td>Aman ({this.state.tmp2[2][0]})</td>
                                 <td>Aman ({this.state.tmp2[2][1]})</td>
                                 <td>Aman ({this.state.tmp2[2][2]})</td>
