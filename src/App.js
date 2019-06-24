@@ -31,6 +31,7 @@ class App extends React.Component {
     agama: 0,
     tmp1: [],
     tmp2: [],
+    hasilAkhir: 0,
     paramtoleransi: [
       { type: 'line', name: 'Buruk', data: [[0,1], [0,1], [1,1], [2,0]] },
       { type: 'line', name: 'Sedang', data: [[1,0], [2,1], [2,1], [3,0]] },
@@ -54,6 +55,7 @@ class App extends React.Component {
       { type: 'line', name: 'Sangat Berpotensi', data: [[2,0],[3,1],[4,1],[4,1]] },
     ],
   }
+
   getBobot = async () =>{
     let data = await Store.dataJawaban
     this.setState({
@@ -68,38 +70,72 @@ class App extends React.Component {
       this.cekPersamaanRadikal()
     })
   }
+
   componentDidMount = () =>{
     this.getBobot()
-
   }
-  defuzzi = () => {
+
+  defuzzi1 = (total) => {
     const q = 0;
-    let hslmoderat = 2;
-    let hslkonservatif = 1.6;
-    let hslradikal = 1.5;
+    let arr = this.state.tmp1;
+    let hslmoderat = Number(arr[2][0]) + Number(arr[2][1]) + Number(arr[2][2]) +Number(arr[2][3]);
+    let hslkonservatif = Number(arr[1][2]) +Number(arr[1][3]);
+    let hslradikal =  Number(arr[0][0]) + Number(arr[0][1]) + Number(arr[0][2]) + Number(arr[0][3]) + Number(arr[1][0]) + Number(arr[1][1]);
     let hslmod = (hslmoderat * 5) + q;
     let hslkonser = (hslkonservatif * 3.5) + q;
     let hslrad = (hslradikal * 1.5) + q;
-    console.log(hslmod,hslkonser,hslrad);
+    // console.log(hslmod,hslkonser,hslrad);
+    this.hitunghasil(hslmod,hslkonser,hslrad,total)
   }
-  hitunghasil = () => {
-    let hslmoderat = 76;
-    let hslkonservatif = 10;
-    let hslradikal = 5;
-    let pembagi = 5.8;
-    let hsl = (hslmoderat+hslkonservatif+hslradikal)/pembagi;
-    let cetak = ''
-    if(hsl <= 10.0 && hsl >= 8.0){
-      cetak = 'Moderat'
-    }else if(hsl <= 7.9 && hsl >= 4.0){
-      cetak = 'Konservatif'
-    }else if(hsl <= 3.9 && hsl >= 0.1){
-      cetak = 'Radikal'
-    }else{
-      cetak = 'Moderat'
-    }
-    console.log(hsl,cetak);
+
+  defuzzi2 = (total) => {
+    const q = 0;
+    let arr = this.state.tmp2;
+    let hslmoderat = Number(arr[2][0]) + Number(arr[2][1]) + Number(arr[2][2]) +Number(arr[2][3]);
+    let hslkonservatif = Number(arr[1][2]) +Number(arr[1][3]);
+    let hslradikal =  Number(arr[0][0]) + Number(arr[0][1]) + Number(arr[0][2]) + Number(arr[0][3]) + Number(arr[1][0]) + Number(arr[1][1]);
+    let hslmod = (hslmoderat * 5) + q;
+    let hslkonser = (hslkonservatif * 3.5) + q;
+    let hslrad = (hslradikal * 1.5) + q;
+    // console.log(hslmod,hslkonser,hslrad);
+    this.hitunghasil(hslmod,hslkonser,hslrad,total)
   }
+
+  hitunghasil = (hslmod,hslkonser,hslrad,total) => {
+    let hsl = (hslmod+hslkonser+hslrad)/total
+    // console.log(hslmod,hslkonser,hslrad)
+    this.setState({hasilAkhir : this.state.hasilAkhir + Number(hsl)},() => {
+      console.log(this.state.hasilAkhir)
+      let cetak = ''
+      if(hsl <= 3.8 && hsl >= 3.0){
+        cetak = 'Moderat'
+      }else if(hsl <= 2.9 && hsl >= 2.4){
+        cetak = 'Konservatif'
+      }else if(hsl <= 2.3 && hsl >= 2.0){
+        cetak = 'Radikal'
+      }else{
+        cetak = 'NaN'
+      }
+      console.log(cetak);
+    })
+  }
+
+  totalTmp1 = () => {
+    let nested = this.state.tmp1
+    let flat = nested.reduce((acc, it) => [...acc, ...it], [])
+    let total = flat.reduce((a,b) => Number(a) + Number(b), 0)
+    // console.log(total)
+    this.defuzzi1(total)
+  }
+
+  totalTmp2 = () => {
+    let nested = this.state.tmp2
+    let flat = nested.reduce((acc, it) => [...acc, ...it], [])
+    let total = flat.reduce((a,b) => Number(a) + Number(b), 0)
+    // console.log(total)
+    this.defuzzi2(total)
+  }
+
   cekPersamaanToleransi = () => {
     let i = 0;
     let hsl = 0;
@@ -213,7 +249,7 @@ class App extends React.Component {
         }
       }
     }
-    this.setState({tmp1})
+    this.setState({tmp1},() => {this.totalTmp1()})
   }
   interferenskalagm = () => {
     let x = 0;
@@ -231,10 +267,10 @@ class App extends React.Component {
         }
       }
     }
-    this.setState({tmp2})
+    this.setState({tmp2},() => {this.totalTmp2()})
   }
   render(){
-
+    console.log(this.state)
     const toleransi = {
       title: {
         text: 'Toleransi Chart'
