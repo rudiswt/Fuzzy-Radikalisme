@@ -77,9 +77,9 @@ class App extends React.Component {
     let hslmoderat = 2;
     let hslkonservatif = 1.6;
     let hslradikal = 1.5;
-    let hslmod = (hslmoderat * 1) + q;
-    let hslkonser = (hslkonservatif * 2) + q;
-    let hslrad = (hslradikal * 3) + q;
+    let hslmod = (hslmoderat * 5) + q;
+    let hslkonser = (hslkonservatif * 3.5) + q;
+    let hslrad = (hslradikal * 1.5) + q;
     console.log(hslmod,hslkonser,hslrad);
   }
   hitunghasil = () => {
