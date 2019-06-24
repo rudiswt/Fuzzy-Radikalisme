@@ -25,10 +25,10 @@ class App extends React.Component {
     tiponsosekpol:[],
     tiponradikal:[],
     tiponagama:[],
-    toleransi: 2.34,
-    sosekpol: 3.6,
-    radikal : 1.5,
-    agama: 3,
+    toleransi: 0,
+    sosekpol: 0,
+    radikal : 0,
+    agama: 0,
     tmp1: [],
     tmp2: [],
     paramtoleransi: [
@@ -54,11 +54,23 @@ class App extends React.Component {
       { type: 'line', name: 'Sangat Berpotensi', data: [[2,0],[3,1],[4,1],[4,1]] },
     ],
   }
+  getBobot = async () =>{
+    let data = await Store.dataJawaban
+    this.setState({
+      toleransi:data[0],
+      sosekpol:data[1],
+      agama:data[2],
+      radikal:data[3]
+    },() => {
+      this.cekPersamaanToleransi()
+      this.cekPersamaanSosekpol()
+      this.cekPersamaanAgama()
+      this.cekPersamaanRadikal()
+    })
+  }
   componentDidMount = () =>{
-    this.cekPersamaanToleransi()
-    this.cekPersamaanSosekpol()
-    this.cekPersamaanAgama()
-    this.cekPersamaanRadikal()
+    this.getBobot()
+    
   }
   sendDataToServer(survey) {
     //send Ajax request to your web server.
@@ -198,7 +210,7 @@ class App extends React.Component {
     this.setState({tmp2})
   }
   render(){
-    console.log(this.state)
+
     const toleransi = {
       title: {
         text: 'Toleransi Chart'
