@@ -64,7 +64,7 @@ class FormSurvey extends Component{
             {id: 17, text: "2. Bagaimana menurut anda dengan budaya daerah yang masih murni?"},
             {id: 18, text: "3. Bagaimana menurut anda dengan budaya daerah yang sudah berintegrasi dengan agama?"},
             {id: 19, text: "4. Bagaimana menurut anda dengan bangunan peninggalan budaya yang menjadi tempat wisata?(candi, keraton, pura)"},
-            {id: 20, text: "5. budaya soal?"},
+            {id: 20, text: "5. Bagaimana jika ada orang yang berdakwah dengan media budaya yang ada?"},
         ]
         return (
             <div>

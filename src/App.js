@@ -59,10 +59,36 @@ class App extends React.Component {
     this.cekPersamaanSosekpol()
     this.cekPersamaanAgama()
     this.cekPersamaanRadikal()
+    this.hitunghasil()
+    this.defuzzi()
   }
-  sendDataToServer(survey) {
-    //send Ajax request to your web server.
-    alert("The results are:" + JSON.stringify(survey.data));
+  defuzzi = () => {
+    const q = 0;
+    let hslmoderat = 2;
+    let hslkonservatif = 1.6;
+    let hslradikal = 1.5;
+    let hslmod = (hslmoderat * 1) + q;
+    let hslkonser = (hslkonservatif * 2) + q;
+    let hslrad = (hslradikal * 3) + q;
+    console.log(hslmod,hslkonser,hslrad);
+  }
+  hitunghasil = () => {
+    let hslmoderat = 76;
+    let hslkonservatif = 10;
+    let hslradikal = 5;
+    let pembagi = 5.8;
+    let hsl = (hslmoderat+hslkonservatif+hslradikal)/pembagi;
+    let cetak = ''
+    if(hsl <= 10.0 && hsl >= 8.0){
+      cetak = 'Moderat'
+    }else if(hsl <= 7.9 && hsl >= 4.0){
+      cetak = 'Konservatif'
+    }else if(hsl <= 3.9 && hsl >= 0.1){
+      cetak = 'Radikal'
+    }else{
+      cetak = 'Moderat'
+    }
+    console.log(hsl,cetak);
   }
   cekPersamaanToleransi = () => {
     let i = 0;
@@ -331,33 +357,33 @@ class App extends React.Component {
                             <thead>
                                 <tr>
                                   <th className="text-danger"><b className={css`font-weight: 500 !important`}>Toleransi/Sosekpol</b></th>
-                                  <th  className="text-danger"><b className={css`font-weight: 500 !important`}>Buruk</b></th>
-                                  <th className="text-danger"><b className={css`font-weight: 500 !important`}>Sedang</b></th>
-                                  <th  className="text-danger"><b className={css`font-weight: 500 !important`}>Baik</b></th>
-                                  <th  className="text-danger"><b className={css`font-weight: 500 !important`}>Sangat Baik</b></th>
+                                  <th  className="text-danger"><b className={css`font-weight: 500 !important`}>Sangat Tidak Setuju</b></th>
+                                  <th className="text-danger"><b className={css`font-weight: 500 !important`}>Tidak Setuju</b></th>
+                                  <th  className="text-danger"><b className={css`font-weight: 500 !important`}>Setuju</b></th>
+                                  <th  className="text-danger"><b className={css`font-weight: 500 !important`}>Sangat Setuju</b></th>
                                 </tr>
                             </thead>
                             <tbody>
                               <tr>
                                 <td className="text-danger"><b className={css`font-weight: 500 !important`}>Buruk</b></td>
-                                <td>Potensi ({this.state.tmp1[0][0]})</td>
-                                <td>Potensi ({this.state.tmp1[0][1]})</td>
-                                <td>Potensi ({this.state.tmp1[0][2]})</td>
-                                <td>Potensi ({this.state.tmp1[0][3]})</td>
+                                <td>Radikal ({this.state.tmp1[0][0]})</td>
+                                <td>Radikal ({this.state.tmp1[0][1]})</td>
+                                <td>Radikal ({this.state.tmp1[0][2]})</td>
+                                <td>Radikal ({this.state.tmp1[0][3]})</td>
                               </tr>
                               <tr>
                                 <td className="text-danger"><b className={css`font-weight: 500 !important`}>Sedang</b></td>
-                                <td>Potensi ({this.state.tmp1[1][0]})</td>
-                                <td>Potensi ({this.state.tmp1[1][1]})</td>
-                                <td>Netral ({this.state.tmp1[1][2]})</td>
-                                <td>Netral ({this.state.tmp1[1][3]})</td>
+                                <td>Radikal ({this.state.tmp1[1][0]})</td>
+                                <td>Radikal ({this.state.tmp1[1][1]})</td>
+                                <td>Konservatif ({this.state.tmp1[1][2]})</td>
+                                <td>Konservatif ({this.state.tmp1[1][3]})</td>
                               </tr>
                               <tr>
                                 <td className="text-danger"><b className={css`font-weight: 500 !important`}>Baik</b></td>
-                                <td>Aman ({this.state.tmp1[2][0]})</td>
-                                <td>Aman ({this.state.tmp1[2][1]})</td>
-                                <td>Aman ({this.state.tmp1[2][2]})</td>
-                                <td>Aman ({this.state.tmp1[2][3]})</td>
+                                <td>Moderat ({this.state.tmp1[2][0]})</td>
+                                <td>Moderat ({this.state.tmp1[2][1]})</td>
+                                <td>Moderat ({this.state.tmp1[2][2]})</td>
+                                <td>Moderat ({this.state.tmp1[2][3]})</td>
                               </tr>
                             </tbody>
                           </table>
@@ -381,33 +407,33 @@ class App extends React.Component {
                             <thead>
                                 <tr>
                                   <th className="text-danger"><b className={css`font-weight: 500 !important`}>Agama/Budaya</b></th>
-                                  <th className="text-danger"><b className={css`font-weight: 500 !important`}>Buruk</b></th>
-                                  <th className="text-danger"><b className={css`font-weight: 500 !important`}>Sedang</b></th>
-                                  <th className="text-danger"><b className={css`font-weight: 500 !important`}>Baik</b></th>
-                                  <th className="text-danger"><b className={css`font-weight: 500 !important`}>Sangat Baik</b></th>
+                                  <th  className="text-danger"><b className={css`font-weight: 500 !important`}>Sangat Tidak Setuju</b></th>
+                                  <th className="text-danger"><b className={css`font-weight: 500 !important`}>Tidak Setuju</b></th>
+                                  <th  className="text-danger"><b className={css`font-weight: 500 !important`}>Setuju</b></th>
+                                  <th  className="text-danger"><b className={css`font-weight: 500 !important`}>Sangat Setuju</b></th>
                                 </tr>
                             </thead>
                             <tbody>
                               <tr>
                                 <td className="text-danger"><b className={css`font-weight: 500 !important`}>Buruk</b></td>
-                                <td>Potensi ({this.state.tmp2[0][0]})</td>
-                                <td>Potensi ({this.state.tmp2[0][1]})</td>
-                                <td>Potensi ({this.state.tmp2[0][2]})</td>
-                                <td>Potensi ({this.state.tmp2[0][3]})</td>
+                                <td>Radikal ({this.state.tmp2[0][0]})</td>
+                                <td>Radikal ({this.state.tmp2[0][1]})</td>
+                                <td>Radikal ({this.state.tmp2[0][2]})</td>
+                                <td>Radikal ({this.state.tmp2[0][3]})</td>
                               </tr>
                               <tr>
                                 <td className="text-danger"><b className={css`font-weight: 500 !important`}>Sedang</b></td>
-                                <td>Potensi ({this.state.tmp2[1][0]})</td>
-                                <td>Potensi ({this.state.tmp2[1][1]})</td>
-                                <td>Netral ({this.state.tmp2[1][2]})</td>
-                                <td>Netral ({this.state.tmp2[1][3]})</td>
+                                <td>Radikal ({this.state.tmp2[1][0]})</td>
+                                <td>Radikal ({this.state.tmp2[1][1]})</td>
+                                <td>Konservatif ({this.state.tmp2[1][2]})</td>
+                                <td>Konservatif ({this.state.tmp2[1][3]})</td>
                               </tr>
                               <tr>
                                 <td className="text-danger"><b className={css`font-weight: 500 !important`}>Baik</b></td>
-                                <td>Aman ({this.state.tmp2[2][0]})</td>
-                                <td>Aman ({this.state.tmp2[2][1]})</td>
-                                <td>Aman ({this.state.tmp2[2][2]})</td>
-                                <td>Aman ({this.state.tmp2[2][3]})</td>
+                                <td>Moderat ({this.state.tmp2[2][0]})</td>
+                                <td>Moderat ({this.state.tmp2[2][1]})</td>
+                                <td>Moderat ({this.state.tmp2[2][2]})</td>
+                                <td>Moderat ({this.state.tmp2[2][3]})</td>
                               </tr>
                             </tbody>
                           </table>
