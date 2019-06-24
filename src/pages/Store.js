@@ -6,6 +6,7 @@ class Store {
   
     setJawaban(data) {
         this.dataJawaban = data
+        console.log(this.dataJawaban)
     }
   
   }
