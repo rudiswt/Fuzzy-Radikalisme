@@ -32,6 +32,8 @@ class App extends React.Component {
     tmp1: [],
     tmp2: [],
     hasilAkhir: 0,
+    hasilHuruf: "",
+
     paramtoleransi: [
       { type: 'line', name: 'Buruk', data: [[0,1], [0,1], [1,1], [2,0]] },
       { type: 'line', name: 'Sedang', data: [[1,0], [2,1], [2,1], [3,0]] },
@@ -105,7 +107,7 @@ class App extends React.Component {
     let hsl = (hslmod+hslkonser+hslrad)/total
     // console.log(hslmod,hslkonser,hslrad)
     this.setState({hasilAkhir : this.state.hasilAkhir + Number(hsl)},() => {
-      console.log(this.state.hasilAkhir)
+      // console.log(this.state.hasilAkhir)
       let cetak = ''
       if(hsl <= 3.8 && hsl >= 3.0){
         cetak = 'Moderat'
@@ -114,9 +116,10 @@ class App extends React.Component {
       }else if(hsl <= 2.3 && hsl >= 2.0){
         cetak = 'Radikal'
       }else{
-        cetak = 'NaN'
+        cetak = 'None'
       }
-      console.log(cetak);
+      // console.log(cetak);
+      this.setState({hasilHuruf:cetak})
     })
   }
 
@@ -332,7 +335,7 @@ class App extends React.Component {
 
           <div>
             <div className="wrapper">
-              <SideBar active={1}/>
+              <SideBar active={2}/>
               <div className="main-panel">
               <nav className="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
                 <div className="container-fluid">
@@ -488,6 +491,18 @@ class App extends React.Component {
                         </div>
                       </div>
                     </div>
+                    </div>
+                    <div className="row">
+                      <div className={css`padding-left: 300px; padding-right: 300px;`+" col-md-12"}>
+                        <div className="card ">
+                          <div className={css`margin-top: 50px;margin-bottom: 50px;`+" card-body text-center"}>
+                            <h3 className="card-text">Kesimpulan</h3>
+                            <h2 className="card-text">Anda Termasuk : 
+                              <b className="text-danger"> {this.state.hasilHuruf}</b>
+                            </h2>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>

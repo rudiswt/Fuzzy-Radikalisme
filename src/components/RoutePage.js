@@ -8,8 +8,8 @@ class RoutePage extends Component{
         return(
             <HashRouter>
                 <Switch>
-                    <Route exact path='/' component={AppPage}/>
-                    <Route exact path='/survey' component={FormSurvey}/>
+                    <Route exact path='/' component={FormSurvey}/>
+                    <Route exact path='/hasil' component={AppPage}/>
                 </Switch>
             </HashRouter>
         )

@@ -53,7 +53,7 @@ class FormSurvey extends Component{
 
     render() {
         if(this.state.redirect){
-            return <Redirect to="/"/>
+            return <Redirect to="/hasil"/>
         }
         // console.log(this.state)
         const soaltoleransi = [
@@ -87,7 +87,7 @@ class FormSurvey extends Component{
         return (
             <div>
                 <div className="wrapper">
-                    <Sidebar active={2}/>
+                    <Sidebar active={1}/>
                     <div className="main-panel">
                         <div className="content">
                             <div className="container-fluid">
@@ -291,7 +291,9 @@ class FormSurvey extends Component{
                                                 </div>
                                         ))
                                     :<div></div>}
-                                                    <button type="button" onClick={this.changeStatusSoal}>tes</button>
+                                                    <div className={css`float:right;`+" card-footer text-right"}>
+                                                        <button type="button" className="btn btn-rose" onClick={this.changeStatusSoal}>SUBMIT</button>
+                                                    </div>
                                                 </form>
                                             </div>
                                         </div>

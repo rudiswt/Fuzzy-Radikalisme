@@ -6,8 +6,8 @@ import { Link } from 'react-router-dom'
 class SideBar extends Component {
   state = {
     leftMenu : [
-      { id: 1 , text: "Dashboard", link:"/", icon: "dashboard", liclass: "nav-tem"},
-      { id: 2 , text: "Quisioner", link:"/survey", icon: "book", liclass: "nav-tem"},
+      { id: 1 , text: "Quisioner", link:"/", icon: "book", liclass: "nav-tem"},
+      { id: 2 , text: "Hasil", link:"/hasil", icon: "poll", liclass: "nav-tem"},
     ]
   }
   componentDidMount = () =>{
