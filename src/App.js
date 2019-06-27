@@ -9,11 +9,6 @@ import { Link } from 'react-router-dom'
 import Store from './pages/Store'
 
 class App extends React.Component {
-  json = {
-    elements: [
-      {"pages":[{"name":"page1","elements":[{"type":"radiogroup","name":"question1","title":"Apakah anda bosan hidup di bumi?","choices":[{"value":"item1","text":"Tidak"},{"value":"item2","text":"Biasa Ajah"},{"value":"item3","text":"Bosan"}]},{"type":"radiogroup","name":"question2","title":"Apakah anda Manusia di bumi?","choices":["item1","item2","item3"]}]}]}
-    ]
-   };
   state =  {
     x4par:[[0,0,1,2],[1,2,2,3],[2,3,3,3.5],[3,3.5,4,4]],
     y4partol:[0],
@@ -31,14 +26,15 @@ class App extends React.Component {
     agama: 0,
     tmp1: [],
     tmp2: [],
-    hasilAkhir: 0,
+    hasilAkhir1: 0,
+    hasilAkhir2: 0,
     hasilHuruf: "",
 
     paramtoleransi: [
-      { type: 'line', name: 'Buruk', data: [[0,1], [0,1], [1,1], [2,0]] },
-      { type: 'line', name: 'Sedang', data: [[1,0], [2,1], [2,1], [3,0]] },
-      { type: 'line', name: 'Baik', data: [[2,0], [3,1], [3,1],[4,0]] },
-      { type: 'line', name: 'Sangat Baik', data: [[3,0], [4,1], [5,1], [5,1]] },
+      { type: 'line', name: 'Sangat Tidak Setuju', data: [[0,1], [0,1], [1,1], [2,0]] },
+      { type: 'line', name: 'Tidak Setuju', data: [[1,0], [2,1], [2,1], [3,0]] },
+      { type: 'line', name: 'Setuju', data: [[2,0], [3,1], [3,1],[4,0]] },
+      { type: 'line', name: 'Sangat Setuju', data: [[3,0], [4,1], [5,1], [5,1]] },
     ],
     paramsosekpol: [
       { type: 'line', name: 'Buruk', data: [[0,1], [0,1], [1,1], [2,0]] },
@@ -52,20 +48,26 @@ class App extends React.Component {
       { type: 'line', name: 'Sangat Setuju', data: [[3,0], [4,1], [5,1], [5,1]] },
     ],
     paramsradikal: [
-      { type: 'line', name: 'Tidak Berpotensi', data: [[0,1], [0,1], [1,1], [2,0]] },
-      { type: 'line', name: 'Berpotensi', data: [[1,0], [2,1], [2,1], [3,0]] },
-      { type: 'line', name: 'Sangat Berpotensi', data: [[2,0],[3,1],[4,1],[4,1]] },
+      { type: 'line', name: 'Buruk', data: [[0,1], [0,1], [1,1], [2,0]] },
+      { type: 'line', name: 'Sedang', data: [[1,0], [2,1], [2,1], [3,0]] },
+      { type: 'line', name: 'Baik', data: [[2,0],[3,1],[4,1],[4,1]] },
     ],
   }
 
   getBobot = async () =>{
     let data = await Store.dataJawaban
     this.setState({
-      toleransi:data[0],
-      sosekpol:data[1],
-      agama:data[2],
-      radikal:data[3]
+      // toleransi:data[0],
+      // sosekpol:data[1],
+      // agama:data[2],
+      // radikal:data[3]
+      toleransi:4.0,
+      sosekpol:3.5,
+      agama:1,
+      radikal:3.5
     },() => {
+      console.log(this.state.toleransi, this.state.sosekpol, this.state.agama, this.state.radikal)
+      // this.newMethod()
       this.cekPersamaanToleransi()
       this.cekPersamaanSosekpol()
       this.cekPersamaanAgama()
@@ -80,47 +82,54 @@ class App extends React.Component {
   defuzzi1 = (total) => {
     const q = 0;
     let arr = this.state.tmp1;
-    let hslmoderat = Number(arr[2][0]) + Number(arr[2][1]) + Number(arr[2][2]) +Number(arr[2][3]);
-    let hslkonservatif = Number(arr[1][2]) +Number(arr[1][3]);
-    let hslradikal =  Number(arr[0][0]) + Number(arr[0][1]) + Number(arr[0][2]) + Number(arr[0][3]) + Number(arr[1][0]) + Number(arr[1][1]);
-    let hslmod = (hslmoderat * 5) + q;
-    let hslkonser = (hslkonservatif * 3.5) + q;
-    let hslrad = (hslradikal * 1.5) + q;
+    let hslmoderat = Number(arr[2][2]) + Number(arr[2][3]) + Number(arr[3][2]) +Number(arr[3][3]);
+    let hslkonservatif = Number(arr[2][1]) + Number(arr[3][0]) + Number(arr[3][1]);
+    let hslradikal =  Number(arr[0][0]) + Number(arr[0][1]) + Number(arr[0][2]) + Number(arr[0][3]) + Number(arr[1][0]) + Number(arr[1][1]) + Number(arr[1][2]) + + Number(arr[1][3]) + Number(arr[2][0]);
+    let hslmod = (hslmoderat * 0.7) + q;
+    let hslkonser = (hslkonservatif * 1) + q;
+    let hslrad = (hslradikal * 2) + q;
     // console.log(hslmod,hslkonser,hslrad);
-    this.hitunghasil(hslmod,hslkonser,hslrad,total)
+    let hsl = (hslmod+hslkonser+hslrad)/total
+    this.setState({hasilAkhir1 : Number(hsl) }, () => {
+      // this.hitunghasil()
+    })
   }
 
   defuzzi2 = (total) => {
     const q = 0;
     let arr = this.state.tmp2;
-    let hslmoderat = Number(arr[2][0]) + Number(arr[2][1]) + Number(arr[2][2]) +Number(arr[2][3]);
-    let hslkonservatif = Number(arr[1][2]) +Number(arr[1][3]);
-    let hslradikal =  Number(arr[0][0]) + Number(arr[0][1]) + Number(arr[0][2]) + Number(arr[0][3]) + Number(arr[1][0]) + Number(arr[1][1]);
-    let hslmod = (hslmoderat * 5) + q;
-    let hslkonser = (hslkonservatif * 3.5) + q;
-    let hslrad = (hslradikal * 1.5) + q;
+    let hslmoderat = Number(arr[2][1]) + Number(arr[2][2]);
+    let hslkonservatif = Number(arr[0][2]) + Number(arr[1][0]) + Number(arr[1][1]) + Number(arr[1][2]) + Number(arr[2][0]);
+    let hslradikal =  Number(arr[0][0]) + Number(arr[0][1]);
+    let hslmod = (hslmoderat * 0.7) + q;
+    let hslkonser = (hslkonservatif * 1) + q;
+    let hslrad = (hslradikal * 2) + q;
     // console.log(hslmod,hslkonser,hslrad);
-    this.hitunghasil(hslmod,hslkonser,hslrad,total)
+    let hsl = (hslmod+hslkonser+hslrad)/total
+    this.setState({hasilAkhir2 : Number(hsl) }, () => {
+      this.hitunghasil()
+    })
   }
 
-  hitunghasil = (hslmod,hslkonser,hslrad,total) => {
-    let hsl = (hslmod+hslkonser+hslrad)/total
-    // console.log(hslmod,hslkonser,hslrad)
-    this.setState({hasilAkhir : this.state.hasilAkhir + Number(hsl)},() => {
-      // console.log(this.state.hasilAkhir)
+  hitunghasil = () => {
+    let hsl = this.state.hasilAkhir1 + this.state.hasilAkhir2
+    hsl = Math.round( hsl * 10 ) / 10
+    console.log(hsl)
+    // this.setState({hasilAkhir : this.state.hasilAkhir + Number(hsl)},() => {
+      console.log(this.state)
       let cetak = ''
-      if(hsl <= 3.8 && hsl >= 3.0){
+      if(hsl <= 2.2 && hsl >= 2.0){
         cetak = 'Moderat'
-      }else if(hsl <= 2.9 && hsl >= 2.4){
+      }else if(hsl <= 1.9 && hsl >= 1.5){
         cetak = 'Konservatif'
-      }else if(hsl <= 2.3 && hsl >= 2.0){
+      }else if(hsl <= 1.4 && hsl >= 0.1){
         cetak = 'Radikal'
       }else{
         cetak = 'None'
       }
       // console.log(cetak);
       this.setState({hasilHuruf:cetak})
-    })
+    // })
   }
 
   totalTmp1 = () => {
@@ -240,7 +249,7 @@ class App extends React.Component {
     let x = 0;
     let y = 0;
     let tole = this.state.y4partol;
-    let telo = this.state.y3parpol;
+    let telo = this.state.y4paragm;
     let tmp1 = []
     for(x=0; x < telo.length ; x++){
       tmp1[x] = []
@@ -257,7 +266,7 @@ class App extends React.Component {
   interferenskalagm = () => {
     let x = 0;
     let y = 0;
-    let tole = this.state.y4paragm;
+    let tole = this.state.y3parpol;
     let telo = this.state.y3parkal;
     let tmp2 = []
     for(x=0; x < telo.length ; x++){
@@ -272,8 +281,12 @@ class App extends React.Component {
     }
     this.setState({tmp2},() => {this.totalTmp2()})
   }
+  newMethod() {
+    return console.log;
+  }
+
   render(){
-    console.log(this.state)
+    // console.log(this.state)
     const toleransi = {
       title: {
         text: 'Toleransi Chart'
@@ -332,7 +345,6 @@ class App extends React.Component {
     }
     // var surveyJSON = {"pages":[{"name":"page1","elements":[{"type":"radiogroup","name":"question1","title":"Apakah anda bosan hidup di bumi?","choices":[{"value":"item1","text":"Tidak"},{"value":"item2","text":"Biasa Ajah"},{"value":"item3","text":"Bosan"}]},{"type":"radiogroup","name":"question2","title":"Apakah anda Manusia di bumi?","choices":["item1","item2","item3"]}]}]}
     return (
-
           <div>
             <div className="wrapper">
               <SideBar active={2}/>
@@ -374,14 +386,14 @@ class App extends React.Component {
                       <div className="col-md-6">
                         <div className="card card-chart">
                           <div className="card-body">
-                              <HighchartsReact highcharts={Highcharts} options={sosekpol} />
+                              <HighchartsReact highcharts={Highcharts} options={agama} />
                           </div>
                         </div>
                       </div>
                       <div className="col-md-6">
                         <div className="card card-chart">
                           <div className="card-body">
-                              <HighchartsReact highcharts={Highcharts} options={agama} />
+                              <HighchartsReact highcharts={Highcharts} options={sosekpol} />
                           </div>
                         </div>
                       </div>
@@ -397,7 +409,7 @@ class App extends React.Component {
                       <div className="card">
                         <div className=" card-header card-header-danger">
                           <h4 className="card-title"><b className={css`font-weight: 500 !important`}>Tabel Interference</b></h4>
-                          <p className="card-category"><b className={css`font-weight: 500 !important`}>Toleransi dan Sosekpol</b></p>
+                          <p className="card-category"><b className={css`font-weight: 500 !important`}>Toleransi dan Agama</b></p>
                         </div>
                         <div className="card-body table-responsive">
                         {
@@ -405,7 +417,7 @@ class App extends React.Component {
                             ? <table className="table table-hover">
                             <thead>
                                 <tr>
-                                  <th className="text-danger"><b className={css`font-weight: 500 !important`}>Toleransi/Sosekpol</b></th>
+                                  <th className="text-danger"><b className={css`font-weight: 500 !important`}>Toleransi/Agama</b></th>
                                   <th  className="text-danger"><b className={css`font-weight: 500 !important`}>Sangat Tidak Setuju</b></th>
                                   <th className="text-danger"><b className={css`font-weight: 500 !important`}>Tidak Setuju</b></th>
                                   <th  className="text-danger"><b className={css`font-weight: 500 !important`}>Setuju</b></th>
@@ -414,25 +426,32 @@ class App extends React.Component {
                             </thead>
                             <tbody>
                               <tr>
-                                <td className="text-danger"><b className={css`font-weight: 500 !important`}>Buruk</b></td>
+                                <td className="text-danger"><b className={css`font-weight: 500 !important`}>Sangat Tidak Setuju</b></td>
                                 <td>Radikal ({this.state.tmp1[0][0]})</td>
                                 <td>Radikal ({this.state.tmp1[0][1]})</td>
                                 <td>Radikal ({this.state.tmp1[0][2]})</td>
                                 <td>Radikal ({this.state.tmp1[0][3]})</td>
                               </tr>
                               <tr>
-                                <td className="text-danger"><b className={css`font-weight: 500 !important`}>Sedang</b></td>
+                                <td className="text-danger"><b className={css`font-weight: 500 !important`}>Tidak Setuju</b></td>
                                 <td>Radikal ({this.state.tmp1[1][0]})</td>
                                 <td>Radikal ({this.state.tmp1[1][1]})</td>
-                                <td>Konservatif ({this.state.tmp1[1][2]})</td>
-                                <td>Konservatif ({this.state.tmp1[1][3]})</td>
+                                <td>Radikal ({this.state.tmp1[1][2]})</td>
+                                <td>Radikal ({this.state.tmp1[1][3]})</td>
                               </tr>
                               <tr>
-                                <td className="text-danger"><b className={css`font-weight: 500 !important`}>Baik</b></td>
-                                <td>Moderat ({this.state.tmp1[2][0]})</td>
-                                <td>Moderat ({this.state.tmp1[2][1]})</td>
+                                <td className="text-danger"><b className={css`font-weight: 500 !important`}>Setuju</b></td>
+                                <td>Radikal ({this.state.tmp1[2][0]})</td>
+                                <td>Konservatif ({this.state.tmp1[2][1]})</td>
                                 <td>Moderat ({this.state.tmp1[2][2]})</td>
                                 <td>Moderat ({this.state.tmp1[2][3]})</td>
+                              </tr>
+                              <tr>
+                                <td className="text-danger"><b className={css`font-weight: 500 !important`}>Sangat Setuju</b></td>
+                                <td>Konservatif ({this.state.tmp1[3][0]})</td>
+                                <td>Konservatif ({this.state.tmp1[3][1]})</td>
+                                <td>Moderat ({this.state.tmp1[3][2]})</td>
+                                <td>Moderat ({this.state.tmp1[3][3]})</td>
                               </tr>
                             </tbody>
                           </table>
@@ -455,11 +474,10 @@ class App extends React.Component {
                             ? <table className="table table-hover">
                             <thead>
                                 <tr>
-                                  <th className="text-danger"><b className={css`font-weight: 500 !important`}>Agama/Budaya</b></th>
-                                  <th  className="text-danger"><b className={css`font-weight: 500 !important`}>Sangat Tidak Setuju</b></th>
-                                  <th className="text-danger"><b className={css`font-weight: 500 !important`}>Tidak Setuju</b></th>
-                                  <th  className="text-danger"><b className={css`font-weight: 500 !important`}>Setuju</b></th>
-                                  <th  className="text-danger"><b className={css`font-weight: 500 !important`}>Sangat Setuju</b></th>
+                                  <th className="text-danger"><b className={css`font-weight: 500 !important`}>Sosekpol/Budaya</b></th>
+                                  <th  className="text-danger"><b className={css`font-weight: 500 !important`}>Buruk</b></th>
+                                  <th className="text-danger"><b className={css`font-weight: 500 !important`}>Sedang</b></th>
+                                  <th  className="text-danger"><b className={css`font-weight: 500 !important`}>Baik</b></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -467,22 +485,19 @@ class App extends React.Component {
                                 <td className="text-danger"><b className={css`font-weight: 500 !important`}>Buruk</b></td>
                                 <td>Radikal ({this.state.tmp2[0][0]})</td>
                                 <td>Radikal ({this.state.tmp2[0][1]})</td>
-                                <td>Radikal ({this.state.tmp2[0][2]})</td>
-                                <td>Radikal ({this.state.tmp2[0][3]})</td>
+                                <td>Konservatif ({this.state.tmp2[0][2]})</td>
                               </tr>
                               <tr>
                                 <td className="text-danger"><b className={css`font-weight: 500 !important`}>Sedang</b></td>
-                                <td>Radikal ({this.state.tmp2[1][0]})</td>
-                                <td>Radikal ({this.state.tmp2[1][1]})</td>
+                                <td>Konservatif ({this.state.tmp2[1][0]})</td>
+                                <td>Konservatif ({this.state.tmp2[1][1]})</td>
                                 <td>Konservatif ({this.state.tmp2[1][2]})</td>
-                                <td>Konservatif ({this.state.tmp2[1][3]})</td>
                               </tr>
                               <tr>
                                 <td className="text-danger"><b className={css`font-weight: 500 !important`}>Baik</b></td>
-                                <td>Moderat ({this.state.tmp2[2][0]})</td>
+                                <td>Konservatif ({this.state.tmp2[2][0]})</td>
                                 <td>Moderat ({this.state.tmp2[2][1]})</td>
                                 <td>Moderat ({this.state.tmp2[2][2]})</td>
-                                <td>Moderat ({this.state.tmp2[2][3]})</td>
                               </tr>
                             </tbody>
                           </table>
@@ -493,12 +508,24 @@ class App extends React.Component {
                     </div>
                     </div>
                     <div className="row">
-                      <div className={css`padding-left: 300px; padding-right: 300px;`+" col-md-12"}>
-                        <div className="card ">
+                      <div className="col-md-3">
+                        <div className="card">
+                          <div className={css`margin-top: 90px;margin-bottom: 90px;`+" card-body text-center"}>
+                            <h5 className="card-text">Moderat ( 4 - 3 )</h5>
+                            <h5 className="card-text">Konservatif ( 2.9 - 2.4 )</h5>
+                            <h5 className="card-text">Radikal ( 2.3 - 0 )</h5>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-md-9">
+                        <div className="card">
                           <div className={css`margin-top: 50px;margin-bottom: 50px;`+" card-body text-center"}>
                             <h3 className="card-text">Kesimpulan</h3>
-                            <h2 className="card-text">Anda Termasuk : 
+                            <h2 className="card-text">Anda Termasuk :
                               <b className="text-danger"> {this.state.hasilHuruf}</b>
+                            </h2>
+                            <h2 className="card-text">Nilai Anda :
+                              <b className="text-danger"> {this.state.hasilAkhir1+this.state.hasilAkhir2}</b>
                             </h2>
                           </div>
                         </div>
@@ -508,7 +535,6 @@ class App extends React.Component {
                 </div>
               </div>
             </div>
-            {/* <Survey.Survey json={ surveyJSON } onComplete={ this.sendDataToServer }/> */}
             </div>
     );
   }
